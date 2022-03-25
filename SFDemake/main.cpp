@@ -3,31 +3,33 @@
 #include <time.h>
 #include <conio.h>
 #include "Fighter.h"
+#include "Game.h"
 
 using namespace std;
 
 int main() {
-	char input = 'a';
-	while(input != 'p') {
-		system("cls");
-		cout << "\n";
-		cout << "	 _____ _                 _    ______ _       _     _             ______                     _        " << endl;
-		cout << "	/  ___| |               | |   |  ___(_)     | |   | |            |  _  \\                   | |       " << endl;
-		cout << "	\\ `--.| |_ _ __ ___  ___| |_  | |_   _  __ _| |__ | |_ ___ _ __  | | | |___ _ __ ___   __ _| | _____ " << endl;
-		cout << "	 `--. \\ __| '__/ _ \\/ _ \\ __| |  _| | |/ _` | '_ \\| __/ _ \\ '__| | | | / _ \\ '_ ` _ \\ / _` | |/ / _ \\" << endl;
-		cout << "	/\\__/ / |_| | |  __/  __/ |_  | |   | | (_| | | | | ||  __/ |    | |/ /  __/ | | | | | (_| |   <  __/" << endl;
-		cout << "	\\____/ \\__|_|  \\___|\\___|\\__| \\_|   |_|\\__, |_| |_|\\__\\___|_|    |___/ \\___|_| |_| |_|\\__,_|_|\\_\\___|" << endl;
-		cout << "	                                        __/ |                                                        " << endl;
-		cout << "	                                       |___/                                                         " << endl;
-		cout << "\n\n	                                         Press P to continue" << endl;
-		input = _getch();
-
-	}
-	input = 'a';
-	Fighter* ryu = new Shoto("Ryu"); //placeholder P1
-	Fighter* ken = new Shoto("Ken"); //placeholder P2
+	fightTest();
+	titleScreen();
+	//char input = 'a';
+	//Fighter* ryu = new Shoto(0); //placeholder P1
+	//Fighter* ken = new Shoto(1); //placeholder P2
+	Fighter roster[S];
+	Shoto ryu(0);
+	Shoto ken(1);
+	/*for (int i = 0; i < 2; i++) {
+		roster[i].setName(ryu->getName());
+		roster[i].setEX(ryu->getEX());
+		roster[i].setWins(ryu->getWins());
+		roster[i].setHP(ryu->getHP());
+		ryu = ken;
+	}*/
+	roster[0] = ryu;
+	roster[1] = ken;
 	int count = 0;
-	while(input != 'p') {
+	cout << roster[0].getName() << ", " << roster[1].getName() << endl;
+	selectFighter(roster);
+	ryu.skilly();
+	/*while (input != 'p') {
 		system("cls");
 		cout << "\nChoose a Fighter:\nPress P to confirm your choice\n" << endl;
 		(count == 0) ? cout << "-->" << " " << ryu->getName() << endl : cout << ryu->getName() << endl;
@@ -44,9 +46,11 @@ int main() {
 		case 1: cout << "\nYou chose " << ken->getName() << endl; break;
 		case 2: cout << "\nYou chose to create a new Fighter" << endl; break;
 		default: break;
-	}
-	delete ryu;
-	delete ken;
+	}*/
+	//delete ryu;
+	//delete[] roster;
+	//delete ken; //crash
+	//delete roster; crash
 	//system("cls");
 	return 0; 
 }
