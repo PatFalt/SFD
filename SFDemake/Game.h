@@ -7,14 +7,22 @@
 #include <conio.h>
 #include <iostream>
 #include <array>
+#include <time.h>
 #define S 10
 
 using namespace std;
 
 void titleScreen();
-int selectFighter(Fighter roster[S]);
+int selectMode();
+int selectFighter(Fighter* roster[]);
+int selectOp(Fighter* roster[], int block);
 void fightTest();
-void fight();
+void resolveAction(Fighter& ryu, Fighter& ken, int ryuAction);
+void doAction(Fighter& ryu, Fighter& ken, int ryuAction);
+int createFighter();
+int rosterSize(Fighter* roster[]);
+void fight(Fighter& ryu, Fighter& ken);
+void printFightMenu(Fighter& ryu, Fighter& ken);
 
 
 #endif

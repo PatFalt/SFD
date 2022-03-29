@@ -1,56 +1,68 @@
-#include <iostream>
-#include <assert.h>
-#include <time.h>
-#include <conio.h>
+#pragma once
 #include "Fighter.h"
+#include "Skill.h"
 #include "Game.h"
 
 using namespace std;
 
 int main() {
+	srand(time(NULL));
 	fightTest();
 	titleScreen();
-	//char input = 'a';
-	//Fighter* ryu = new Shoto(0); //placeholder P1
-	//Fighter* ken = new Shoto(1); //placeholder P2
-	Fighter roster[S];
-	Shoto ryu(0);
-	Shoto ken(1);
-	/*for (int i = 0; i < 2; i++) {
-		roster[i].setName(ryu->getName());
-		roster[i].setEX(ryu->getEX());
-		roster[i].setWins(ryu->getWins());
-		roster[i].setHP(ryu->getHP());
-		ryu = ken;
-	}*/
+	Fighter* roster[S];
+	Shoto* ryu = new Shoto(0);
+	Shoto* ken = new Shoto(1);
+	for (int i = 0; i < S; i++) {
+		roster[i] = new Fighter();
+	}
 	roster[0] = ryu;
 	roster[1] = ken;
-	int count = 0;
-	cout << roster[0].getName() << ", " << roster[1].getName() << endl;
-	selectFighter(roster);
-	ryu.skilly();
-	/*while (input != 'p') {
-		system("cls");
-		cout << "\nChoose a Fighter:\nPress P to confirm your choice\n" << endl;
-		(count == 0) ? cout << "-->" << " " << ryu->getName() << endl : cout << ryu->getName() << endl;
-		(count == 1) ? cout << "-->" << " " << ken->getName() << endl : cout << ken->getName() << endl;
-		(count == 2) ? cout << "-->" << " " << "Create new Fighter" << endl : cout << "Create new Fighter" << endl;
-		input = _getch();
-		switch (input) {
-			case 's':	count++; count %= 3; break;
-			case 'w':	count--; (count < 0) ? count = 2 : count %= 3; break;
+	char contGame = '\0';
+	while (contGame != 'q') {
+		int mode = selectMode();
+		if (mode == 0) {
+			//PVE
+			int ryu = selectFighter(roster);
+			int ken = selectOp(roster, ryu);
+			fight(*roster[ryu], *roster[ken]);
+			cout << "Press P to continue playing or Q to quit" << endl;
+			contGame = _getch();
+		}
+		if (mode == 1) {
+			//PVP
+			int choice = selectFighter(roster);
+		}
+		if (mode == 2) {
+			//Tag-Team
+			int choice = selectFighter(roster);
+		}
+		if (mode == 3) {
+			string newName;
+			int size = rosterSize(roster);
+			int choice = createFighter();
+			cout << "\nName the new Fighter: ";
+			cin >> newName;
+			if (choice == 0) {
+				Shoto* newFighter = new Shoto(newName);
+				roster[size] = newFighter;
+			}
+			else if (choice == 1) {
+				Rush* newFighter = new Rush(newName);
+				roster[size] = newFighter;
+			}
+			else if (choice == 2) {
+				Grappler* newFighter = new Grappler(newName);
+				roster[size] = newFighter;
+			}
+			system("cls");
+			continue;
 		}
 	}
-	switch (count) {
-		case 0: cout << "\nYou chose " << ryu->getName() << endl; break;
-		case 1: cout << "\nYou chose " << ken->getName() << endl; break;
-		case 2: cout << "\nYou chose to create a new Fighter" << endl; break;
-		default: break;
-	}*/
-	//delete ryu;
-	//delete[] roster;
-	//delete ken; //crash
-	//delete roster; crash
-	//system("cls");
+	ryu->skilly();
+	delete ryu;
+	delete ken;
+	for (int i = S-1; i >= 0; i--) {
+		delete roster[i];
+	}
 	return 0; 
 }
