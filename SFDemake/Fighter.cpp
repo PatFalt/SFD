@@ -6,6 +6,7 @@ Fighter::Fighter() {
 	ex = 0;
 	state = status::neutral;
 	wins = 0;
+	losses = 0;
 	atk = 0;
 	def = 0;
 	speed = 0;
@@ -33,12 +34,12 @@ void Fighter::punch(Fighter& opponent){
 								assert(opponent.getState() != status::grabbing && "Invalid State");
 								assert(opponent.getState() != status::stun && "Invalid State");
 	}	
-	ex++;
 	cout << name << " punched " << opponent.getName() << endl;
 }
 
 void Fighter::block(){
 	state = status::blocking;
+	ex++;
 	cout << name << " assumes a defensive stance" << endl;
 }
 
@@ -64,19 +65,15 @@ void Fighter::grab(Fighter& opponent){
 	}
 }
 
-void Fighter::useSkill(int i, Fighter& ken)
-{
+void Fighter::exAttack(Fighter& opponent){
+	if (ex != 10) return;
+	ex = 0;
+	opponent.setHP(opponent.getHP() - 45);
+	opponent.setState(status::stun);
+	cout << name << " dealt a devastating blow." << endl;
 }
 
-void Fighter::updateLifebar(){}
-
-int Fighter::chooseAction(){
-	cout << "\n\nChoose action: " << endl;
-	cout << "1: Punch\n2: Block\n3: Grab" << endl;
-	int choice = _getch();
-	return 0;
-}
-
+//--------------------------------------------------
 Shoto::Shoto(string input) {
 	name = input;
 	hp = 200;
@@ -86,18 +83,20 @@ Shoto::Shoto(string input) {
 	atk = 10;
 	def = 10;
 	speed = 1;
+	skill1 = selectShotoSkill();
+	skill2 = selectShotoSkill();
 }
 
 Shoto::Shoto(int num){ //default Ryu/Ken
 	if (num < 1) {
 		name = "Ryu";
-		skill1 = new ShotoSkill("Hadoken", 30, 2, 1);
-		skill2 = new ShotoSkill("Shoryuken", 40, 2, 2);
+		skill1 = 0;
+		skill2 = 1;
 	}
 	else {
 		name = "Ken";
-		skill1 = new ShotoSkill("Tatsumaki", 35, 2, 1);
-		skill2 = new ShotoSkill("Shoryuken", 40, 2, 2);
+		skill1 = 2;
+		skill2 = 1;
 	}
 	hp = maxHP;
 	lifebar = "|====================|";
@@ -121,35 +120,75 @@ void Shoto::updateLifebar() {
 	lifebar[22] = '|';
 }
 
-int Shoto::chooseAction(){
-	cout << "\n\nChoose action: " << endl;
-	cout << "1: Punch\n2: Block\n3: Grab\n4: " << skill1->getName() << "\n5: " << skill2->getName() << endl;
-	int choice;
-	cin >> choice;
-	return choice;
+void Shoto::restoreFighter(){
+	hp = maxHP;
+	ex = 0;
+	updateLifebar();
+	state = status::neutral;
 }
 
-/*void Shoto::useSkill(int i, Fighter& ken) {
-	if (i == 1) {
-		if(skill1->getName() == "Hadoken") { hadoken(skill1, ken); }
-		if(skill1->getName() == "Shoryuken"){}
-		if(skill1->getName() == "Tatsumaki"){}
-		if(skill1->getName() == "Counter"){}
-		if(skill1->getName() == "Shoulder Throw"){}
+int Shoto::selectShotoSkill() {
+	char input = 'a';
+	int count = 0;
+	while (input != 'p') {
+		system("cls");
+		cout << "\nSelect Skill:\nPress P to confirm your choice\n" << endl;
+		(count == 0) ? cout << "--> Hadoken" << endl : cout << "Hadoken" << endl;
+		(count == 1) ? cout << "--> Shoryuken" << endl : cout << "Shoryuken" << endl;
+		(count == 2) ? cout << "--> Tatsumaki" << endl : cout << "Tatsumaki" << endl;
+		(count == 3) ? cout << "--> Axe Kick" << endl : cout << "Axe Kick" << endl;
+		(count == 4) ? cout << "--> Counter" << endl : cout << "Counter" << endl;
+		input = _getch();
+		switch (input) {
+			case 's':	count++; count %= 5; break;
+			case 'w':	count--; (count < 0) ? count = 4 : count %= 5; break;
+		default:	assert(!(input == 's' || input == 'w') && "select screen error");
+		}
 	}
-	if (i == 2) {
-		if (skill2->getName() == "Hadoken") { }
-		if (skill2->getName() == "Shoryuken") {}
-		if (skill2->getName() == "Tatsumaki") {}
-		if (skill2->getName() == "Counter") {}
-		if (skill2->getName() == "Shoulder Throw") {}
+	switch (count) {
+		case 0: return 0;
+		case 1: return 1;
+		case 2: return 2;
+		case 3: return 3;
+		case 4: return 4;
+		default: break;
 	}
+	return -1;
 }
 
+void Shoto::useSkill(Skill* sklList[], int slot, Fighter& ken) {
+	if (slot == 1) {
+		switch (ken.getState()) {
+			case status::neutral:	ken.setHP(ken.getHP() - sklList[skill1]->getDmg()); break;
+			case status::attacking:	ken.setHP(ken.getHP() - sklList[skill1]->getDmg()); break;
+			case status::grabbing:	ken.setHP(ken.getHP() - sklList[skill1]->getDmg()); break;
+			case status::stun:		ken.setHP(ken.getHP() - sklList[skill1]->getDmg()); break;
+			case status::blocking:	ken.setHP(ken.getHP() - (sklList[skill1]->getDmg() / 2)); break;
+		}
+		ex += sklList[skill1]->getExGain();
+		cout << name << " uses " << sklList[skill1]->getName() << endl;
+		state = status::wait;
+		return;
+	}
+	else {
+		switch (ken.getState()) {
+			case status::neutral:	ken.setHP(ken.getHP() - sklList[skill2]->getDmg()); break;
+			case status::attacking:	ken.setHP(ken.getHP() - sklList[skill2]->getDmg()); break;
+			case status::grabbing:	ken.setHP(ken.getHP() - sklList[skill2]->getDmg()); break;
+			case status::stun:		ken.setHP(ken.getHP() - sklList[skill2]->getDmg()); break;
+			case status::blocking:	ken.setHP(ken.getHP() - (sklList[skill2]->getDmg() / 2)); break;
+		}
+		ex += sklList[skill2]->getExGain();
+		cout << name << " uses " << sklList[skill2]->getName() << endl;
+		state = status::wait;
+		return;
+	}	
+}
+/*
 void Shoto::hadoken(ShotoSkill& hadoken, Fighter& ken){
 	if (hadoken.getCooldown() > 0) return;
 }*/
-
+//------------------------------------------------------
 Grappler::Grappler(string input){
 	name = input;
 	hp = 300;
@@ -164,10 +203,24 @@ Grappler::~Grappler()
 {
 }
 
-void Grappler::useSkill(int i, Fighter& ken)
-{
-}
+/*void Grappler::useSkill(GrappleSkill skl, Fighter& ken) {
+	switch (ken.getState()) {
+		case status::neutral:	ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::attacking:	ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::grabbing:	ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::stun:		ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::blocking:	ken.setHP(ken.getHP() - (skl.getDmg() / 2)); break;
+	}
+	ex += skl.getExGain();
+}*/
 
+void Grappler::restoreFighter(){
+	hp = maxHP;
+	ex = 0;
+	updateLifebar();
+	state = status::neutral;
+}
+//---------------------------------------------------------------------------
 Rush::Rush(string input){
 	name = input;
 	hp = 200;
@@ -182,6 +235,20 @@ Rush::~Rush()
 {
 }
 
-void Rush::useSkill(int i, Fighter& ken)
-{
+/*void Rush::useSkill(RushSkill skl, Fighter& ken) {
+	switch (ken.getState()) {
+		case status::neutral:	ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::attacking:	ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::grabbing:	ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::stun:		ken.setHP(ken.getHP() - skl.getDmg()); break;
+		case status::blocking:	ken.setHP(ken.getHP() - (skl.getDmg() / 2)); break;
+	}
+	ex += skl.getExGain();
+}*/
+
+void Rush::restoreFighter(){
+	hp = maxHP;
+	ex = 0;
+	updateLifebar();
+	state = status::neutral;
 }

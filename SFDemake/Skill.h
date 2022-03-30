@@ -2,6 +2,9 @@
 #ifndef SKILL_H
 #define SKILL_H
 #include <string>
+#include <iostream>
+#include <conio.h>
+#include <assert.h>
 
 using namespace std;
 
@@ -9,47 +12,48 @@ class Skill{
 	public:
 		Skill();
 		~Skill();
-		string getName() { return name; }
-		int getDmg() { return damage; }
-		int getExGain() { return exGain; }
+		string getName() const { return name; }
+		int getDmg() const { return damage; }
+		int getExGain() const { return exGain; }
+		int getSkill() const { return id; }
 	protected:
 		string name;
 		int damage;
 		int exGain;
-		
+		int id;
 };
-
+//-------------------------------------------
 class ShotoSkill : public Skill {
-	public:
+	public:	
 		ShotoSkill();
-		ShotoSkill(string skillname, int dmg, int ex, int cd);
+		ShotoSkill(int skl);
 		~ShotoSkill();
 		int getCooldown() const { return cooldown; }
 		//void useSkill(Fighter& ryu, Fighter& ken);
 	private:
 		int cooldown;
 };
-
+//--------------------------------------------
 class GrappleSkill : public Skill {
 	public:
 		GrappleSkill();
-		GrappleSkill(string skillname, int dmg, int ex, int wu);
+		GrappleSkill(int skl);
 		~GrappleSkill();
+		int getWindup() const { return windup; }
 		//void useSkill(Fighter& ryu, Fighter& ken);
 	private:
 		int windup;
 };
-
+//---------------------------------------------
 class RushSkill : public Skill {
-	private:
-		int atkred;
 	public:
 		RushSkill();
+		RushSkill(int skl);
 		~RushSkill();
-		RushSkill(string skillname, int dmg, int ex, int cd);
+		int getAtkred() const { return atkred; }
 		//void useSkill(Fighter& ryu, Fighter& ken);
+	private:
+		int atkred;
 };
 
 #endif
-
-//fighter hat zwei skill slots für skills, in main ein array an skills erstellen

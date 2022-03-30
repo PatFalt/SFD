@@ -1,3 +1,3 @@
-﻿  main.cpp
-C:\Users\patri\Desktop\Technikum\2.Sem\OOP\Street Fighter Demake\SFD\SFDemake\SFD\SFDemake\main.cpp(9,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Game.cpp
+C:\Users\patri\Desktop\Technikum\2.Sem\OOP\Street Fighter Demake\SFD\SFDemake\SFD\SFDemake\Game.cpp(7,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   SFDemake.vcxproj -> C:\Users\patri\Desktop\Technikum\2.Sem\OOP\Street Fighter Demake\SFD\SFDemake\SFD\SFDemake\x64\Debug\SFDemake.exe

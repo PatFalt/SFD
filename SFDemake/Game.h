@@ -11,18 +11,34 @@
 #define S 10
 
 using namespace std;
+class Game {
+	public:
+		Game();
+		~Game();
+		void titleScreen();
+		void selectMode();
+		int selectFighter();
+		int selectOp(int block);
+		void fightTest();
+		void resolveAction(Fighter& ryu, Fighter& ken);
+		void doAction(Fighter& ryu, Fighter& ken, int ryuAction);
+		//void useSkill(Fighter& ryu, Fighter& ken, int slot);
+		int chooseAction(Fighter& ryu);
+		int createFighter();
+		void addFighter();
+		int rosterSize();
+		void fight(Fighter& ryu, Fighter& ken);
+		void printFightMenu(Fighter& ryu, Fighter& ken);
+		void printWinLoss();
+		void play();
+	private:
+		int mode;
+		Fighter* roster[S];
+		Fighter* team1[2];
+		Fighter* team2[2];
+		Skill* skills[15];
+		char contGame;
 
-void titleScreen();
-int selectMode();
-int selectFighter(Fighter* roster[]);
-int selectOp(Fighter* roster[], int block);
-void fightTest();
-void resolveAction(Fighter& ryu, Fighter& ken, int ryuAction);
-void doAction(Fighter& ryu, Fighter& ken, int ryuAction);
-int createFighter();
-int rosterSize(Fighter* roster[]);
-void fight(Fighter& ryu, Fighter& ken);
-void printFightMenu(Fighter& ryu, Fighter& ken);
-
+};
 
 #endif
