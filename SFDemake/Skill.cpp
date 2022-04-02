@@ -41,7 +41,7 @@ ShotoSkill::ShotoSkill(int skl){
 		case 4:	name = "Counter";
 				damage = 20;
 				exGain = 0;
-				cooldown = 1;
+				cooldown = 0;
 				break;
 	}
 }
@@ -81,7 +81,7 @@ GrappleSkill::GrappleSkill(int skl) {
 		case 9:	name = "Iron Muscle";
 				damage = 0;
 				exGain = 0;
-				windup = 1;
+				windup = 0;
 				break;
 	}
 }
@@ -111,16 +111,16 @@ RushSkill::RushSkill(int skl){
 		case 12: name = "Throw Kunai";
 				 damage = 20;
 				 exGain = 1;
-				 atkred = 0;
+				 atkred = 1;
 				 break;
 		case 13: name = "Tenko";
 				 damage = 45;
 				 exGain = 1;
-				 atkred = 2;
+				 atkred = 1;
 				 break;
-		case 14: name = "Slide";
+		case 14: name = "Heal";
 				 damage = 0;
-				 exGain = 0;
+				 exGain = 1;
 				 atkred = -1;
 				 break;
 	}
