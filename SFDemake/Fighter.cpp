@@ -87,7 +87,6 @@ void Fighter::wait(){
 Shoto::Shoto(string input) {
 	name = input;
 	hp = 200;
-	//lifebar = "|====================|";
 	ex = 0;
 	wins = 0;
 	atk = 10;
@@ -109,7 +108,6 @@ Shoto::Shoto(int num){ //default Ryu/Ken
 		skill2 = 1;
 	}
 	hp = maxHP;
-	//lifebar = "|====================|";
 	ex = 0;
 	wins = 0;
 	atk = 10;
@@ -238,7 +236,6 @@ Grappler::Grappler(int num){
 		skill2 = 7;
 	}
 	hp = maxHP;
-	//lifebar = "|====================|";
 	ex = 0;
 	wins = 0;
 	atk = 5;
@@ -364,7 +361,6 @@ Rush::Rush(int num){
 		skill1 = 13;
 		skill2 = 14;
 	}
-	//lifebar = "|====================|";
 	hp = maxHP;
 	ex = 0;
 	wins = 0;

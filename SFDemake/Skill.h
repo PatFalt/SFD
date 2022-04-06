@@ -29,7 +29,6 @@ class ShotoSkill : public Skill {
 		ShotoSkill(int skl);
 		~ShotoSkill();
 		int getCooldown() const { return cooldown; }
-		//void useSkill(Fighter& ryu, Fighter& ken);
 	private:
 		int cooldown;
 };
@@ -40,7 +39,6 @@ class GrappleSkill : public Skill {
 		GrappleSkill(int skl);
 		~GrappleSkill();
 		int getWindup() const { return windup; }
-		//void useSkill(Fighter& ryu, Fighter& ken);
 	private:
 		int windup;
 };
@@ -51,7 +49,6 @@ class RushSkill : public Skill {
 		RushSkill(int skl);
 		~RushSkill();
 		int getAtkred() const { return atkred; }
-		//void useSkill(Fighter& ryu, Fighter& ken);
 	private:
 		int atkred;
 };

@@ -303,7 +303,7 @@ void Game::play() {
 	contGame = _getch();
 }
 
-void Game::fight(Fighter& ryu, Fighter& ken) { //FEHLER HIER
+void Game::fight(Fighter& ryu, Fighter& ken) {
 	char a;
 	int turn = 0;
 	while (true) {
@@ -400,15 +400,20 @@ void Game::resolveAction(Fighter& ryu, Fighter& ken){
 				ryuAction = chooseAction(ryu);
 				break;
 	}
-	cout << ryuAction << " " << kenAction << endl;
 	if (mode == 3) {
-		if (ryuAction == 6) { 
-			tag = 0; 
+		if (ryuAction == 6) {
+			tag = 0;
 			doAction(ryu, ken, ryuAction);
-		}
-		if (kenAction == 6) {
-			tag = 1;
-			doAction(ken, ryu, kenAction);
+			if (kenAction == 6) {
+				tag = 1;
+				doAction(ken, ryu, kenAction);
+				return;
+			}
+			if (kenAction == 6) {
+				tag = 1;
+				doAction(ken, ryu, kenAction);
+				return;
+			}
 		}
 	}
 	if (kenAction == 2) {
@@ -431,7 +436,7 @@ void Game::resolveAction(Fighter& ryu, Fighter& ken){
 			doAction(ryu, ken, ryuAction);
 			doAction(ken, ryu, kenAction);
 		}
-	} 
+	}
 	else {
 		if (ryuAction == 3 && kenAction == 3) {
 			std::cout << ken.getName() << " escaped the grab" << endl;
@@ -439,13 +444,14 @@ void Game::resolveAction(Fighter& ryu, Fighter& ken){
 		doAction(ken, ryu, kenAction);
 		doAction(ryu, ken, ryuAction);
 	}
-	if(ryu.getState() != status::wait)
+	if (ryu.getState() != status::wait)
 		ryu.setState(status::neutral);
 	if (ryu.getState() != status::wait)
 		ken.setState(status::neutral);
 }
 
-void Game::doAction(Fighter& ryu, Fighter& ken, int ryuAction){
+
+void Game::doAction(Fighter& ryu, Fighter& ken, int ryuAction) {
 	switch (ryuAction) {
 		case 0: ryu.wait(); break;
 		case 1:	ryu.punch(ken); break;
@@ -464,7 +470,6 @@ int Game::chooseAction(Fighter& ryu) {
 	int choice;
 	int target;
 	if (ryu.getState() == status::wait) {
-		//std::cout << ryu.getName() << " needs to wait for next action" << endl;
 		return 0;
 	}
 	std::cout << "\n\nChoose action: " << endl;

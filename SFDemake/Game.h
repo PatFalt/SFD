@@ -3,7 +3,6 @@
 #define GAME_H
 #include "Fighter.h"
 #include "Skill.h"
-#include "AI.h"
 #include <assert.h>
 #include <conio.h>
 #include <iostream>
